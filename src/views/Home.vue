@@ -1,292 +1,372 @@
 <template>
-  <div class="home">
-    <side-nav :modalAdd="true" />
-    <section class="main-section">
-      <header-item :text="'COFEE SHOP'" :searchicon="true" />
-      <main class="container">
-        <div class="modalShow">
-          <b-modal id="modal-add" hide-footer>
-            <template #modal-title> Add Item </template>
-            <b-form class="m-3">
-              <b-row>
-                <b-col sm="3">
-                  <label for="input-name">Name :</label>
-                </b-col>
-                <b-col sm="9">
-                  <b-form-input id="input-name" v-model="form.name">
-                  </b-form-input>
-                </b-col> </b-row
-              ><br />
-              <b-row>
-                <b-col sm="3">
-                  <label class="mr-sm-4" for="input-image">Image : </label>
-                </b-col>
-                <b-col sm="9">
-                  <b-form-input id="input-image" v-model="form.image">
-                  </b-form-input>
-                </b-col> </b-row
-              ><br />
-              <b-row>
-                <b-col sm="3">
-                  <label class="mr-sm-4" for="input-price">Prices : </label>
-                </b-col>
-                <b-col sm="9">
-                  <b-form-input id="input-price" v-model="form.price">
-                  </b-form-input>
-                </b-col> </b-row
-              ><br />
-              <b-row>
-                <b-col sm="3">
-                  <label class="mr-sm-4" for="input-category">category</label>
-                </b-col>
-                <b-col sm="9">
-                  <b-form-select
-                    id="input-name"
-                    v-model="form.id_category"
-                    :options="options"
-                  >
-                  </b-form-select> </b-col></b-row
-              ><br />
-              <b-button
-                type="submit"
-                class="btn-block"
-                variant="danger"
-                @click="addData()"
-                >Print</b-button
-              >
-              <p class="text-center m-0"><b>OR</b></p>
-              <b-button
-                type="reset"
-                class="btn-block"
-                variant="info"
-                @click="resetData()"
-                >Reset</b-button
-              >
-            </b-form>
-          </b-modal>
+<div v-if="role == 'developer' || role == 'users'" class="row">
+   <div class="row">
+    <div class="col-sm-12 col-xl-9">
+      <header class="row sticky-top bg-white py-4 shadow">
+        <div class="col-3 col-md-1">
+          <Navbar />
         </div>
-
-        <div
-          class="button-item"
-          @click="addCart(item)"
-          v-for="item in dataproduct"
-          :key="item.id"
+        <div class="col-9 col-md-7 justify-content-between">
+          <h1 class="text-center font-weight-bold">WARUNG POJOK</h1>
+          <h1></h1>
+        </div>
+        <div class="col-12 col-md-4 d-flex justify-content-end">
+          <form action="#" class="form-inline my-2 my-lg-0">
+            <input
+              v-model="srcName.name"
+              class="form-control mr-sm-2"
+              type="search"
+              @keyup="searchName()"
+              @keyup.delete="searchName()"
+            />
+          </form>
+          <button class="btn" @click="searchName()">
+            <img src="../assets/searc.png" alt="" />
+          </button>
+          <button class="btn" @click="filterOn()">
+            <img src="../assets/icon/filter1.png" alt="" />
+          </button>
+        </div>
+        <div v-if="filter" class="col-12 text-center border-top">
+          <div class="row">
+            <div class="col-6 col-md-4 d-flex justify-content-center mt-3">
+              <h5>Sort</h5>
+              <select class="form-select ml-2" aria-label="Default select example" v-model="sorted.name" @click="sortedProduct()">
+                <option selected></option>
+                <option value="ASC">1 - 1.000.000</option>
+                <option value="DESC">1.000.000 - 1</option>
+              </select>
+            </div>  
+    
+            <div class="col-6 col-md-4 d-flex justify-content-center mt-3">
+              <h5>OrderBy</h5>
+              <select class="form-select ml-2" aria-label="Default select example" v-model="sorted.price" @click="sortedProduct()">
+                <option selected></option>
+                <option value="price">harga</option>
+              </select>
+            </div>
+            <!-- <div class="col-6 col-md-4 d-flex justify-content-center mt-3">
+              <h5>Category</h5>
+              <select class="form-select ml-3" aria-label="Default select example" v-model="sorted.category" @click="sortedProduct()">
+                <option selected></option>
+                <option value="ASC">Drinks</option>
+                <option value="DESC">Foods</option>
+              </select>
+            </div> -->
+            <!-- <div class="col-6 col-md-3 d-flex justify-content-center  mt-3">
+              <h5>Products</h5>
+              <select class="form-select ml-3" aria-label="Default select example" v-model="sorted.id" @click="sortedProduct()">
+                <option selected></option>
+                <option value="DESC">New</option>
+                <option value="ASC">Old</option>
+              </select>
+            </div> -->
+          </div>
+        </div>
+      </header>
+      <main class="row pt-4 bg-light">
+        <article
+          class="col-sm-12 col-md-6 col-lg-4"
+          v-for="items in datas"
+          :key="items.id"
+          @click="addChart(items)"
         >
-          <card-product
-            :name="item.name"
-            :price="Number(item.price)"
-            :image="item.image"
-          />
-        </div>
+          <Card :images="items.image" :name="items.name" :price="items.price" @prods="addChart" />
+        </article>
       </main>
-    </section>
-    <aside class="shadow-sm">
-      <div class="shadow-sm header-cart">
-        <h2>
-          Cart <span class="span-cart">{{ dataCart.length }}</span>
+    </div>
+    <aside class="col-xl-3 bg-white border-left">
+      <div
+        class="row sticky-top bg-white py-4 d-flex justify-content-center border-bottom"
+      >
+        <h2 class="text-center font-weight-bold">
+          Cart
+          <span class="p-cart-0 bg-warning text-white rounded-circle">
+            {{ chart.length }}
+          </span>
         </h2>
       </div>
-      <article v-if="dataCart && dataCart.length > 0">
-        <div class="cart-wrap">
-          <cart-item v-for="item in dataCart" :key="item.id" :data="item" />
+      <div class="row pt-2" v-if="chart.length > 0">
+        <div
+          v-for="item of addItem"
+          :key="item.id"
+          class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-12"
+        >
+          <Cart :image="item.image" :name="item.name" :price="item.price" />
         </div>
-        <article class="cart-order">
-          <div class="order-total">
-            <h4>Total</h4>
-            <h4>Rp. 150.000</h4>
+
+        <div class="col-12 pt-4">
+          <div class="d-flex justify-content-between">
+            <h3>Total:</h3>
+            <h3>Rp.{{ calculate }}</h3>
           </div>
-          <p class="text-left">*Belum termasuk ppn</p>
-          <b-button class="mt-3" variant="info" block>Checkout</b-button>
-           <b-button class="mt-2" variant="danger" @click="cancelCart()" block>
-            Cancel </b-button
-          ><br /><br />
-        </article>
-      </article>
-      <article v-else class="cart-empty">
-        <img
-          src="../assets/icon/food-and-restaurant.png"
-          class="icon-cartempty"
-          alt=""
-        />
-        <h4>Your cart is empty</h4>
-        <p class="empty-desc">Please add some items from the menu</p>
-      </article>
+          <!-- Button trigger modal -->
+          <button
+            type="button"
+            class="col btn btn-primary"
+            data-toggle="modal"
+            data-target="#exampleModalLong"
+          >
+            Checkout
+          </button>
+
+          <!-- Modal -->
+          <div
+            class="modal fade"
+            id="exampleModalLong"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="exampleModalLongTitle"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h3 class="modal-title" id="exampleModalLongTitle">
+                    Checkout
+                  </h3>
+
+                  <button
+                    type="button"
+                    class="close"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                  >
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div
+                    class="d-flex justify-content-between"
+                    v-for="item of addItem"
+                    :key="item.id"
+                  >
+                    <p class="font-weight-bold">{{ item.name }}</p>
+                    <p class="font-weight-bold">Rp.{{ item.price }}</p>
+                  </div>
+                  <p class="font-weight-bold text-right">
+                    Total : Rp.{{ calculate }}
+                  </p>
+                  <p class="font-weight-bold text-left">
+                    Cashier : {{ cashier }}
+                  </p>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="col btn btn-secondary" data-dismiss="modal" @click="addCheckout(addItem, calculate, cashier)">
+                    Print
+                  </button>
+                  <button type="button" class="col btn btn-primary" data-dismiss="modal" @click="addCheckout(addItem, calculate, cashier)">
+                    Send Email
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button
+            type="button"
+            class="col btn btn-danger mt-2"
+            @click="cencel()"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+      <div class="row" v-else>
+        <div class="col container text-center">
+          <img src="../assets/icon/food-and-restaurant.png" alt="" />
+          <h3>Your cart is empty</h3>
+          <p class="text-muted" style="font-size: 0.9rem;">
+            Please add some items from the menu
+          </p>
+        </div>
+      </div>
     </aside>
   </div>
+</div>
 </template>
 
 <script>
-import CardProduct from "../components/Card.vue";
-import HeaderItem from '../components/HeaderTittle.vue'
-import SideNav from "../components/Navbar";
 import axios from "axios";
-import CartItem from "../components/AddCart.vue";
+import Card from "../components/CardItems.vue";
+import Navbar from "../components/Navbar.vue";  
+import Cart from "../components/Cart.vue"
+import router from "../routes"
 
 export default {
   name: "Home",
+   components: {
+    Navbar,
+    Card,
+    Cart,
+  },
   data() {
     return {
-      dataproduct: [],
-      dataCart: [],
-      form: {
-        image: "",
-        name: "",
-        price: null,
-        id_category: "",
+      datas: null,
+      chart: [],
+      checkout:{
+        name:null,
+        cashier:null,
+        total:null,
       },
-      options: [],
+      cashier: "Dzul",
+      sorted:{
+        name:'',
+        price:'',
+        names:'',
+      },
+      srcName:{
+        name:'',
+      },
+      filter: false,
+      cacheKey: 'token',
+      userKey: 'name',
+      username: '',
     };
   },
-  components: {
-    HeaderItem, 
-    SideNav,
-    CardProduct,
-    CartItem,
-  },
   methods: {
-    addCart(data) {
-      let hasil = this.dataCart.find((res) => {
-        if (res.name == data.name) {
-          return res.name;
+    loadProducts(){
+      axios.get(process.env.VUE_APP_PRODUCT, {
+        headers: {
+          authtoken: localStorage.getItem(this.cacheKey)
         }
+      })
+      .then((res) => {
+        if(res.data.result.name === 'TokenExpiredError'){
+          alert('Token Expired! Silahkan Login Lagi');
+          router.push({ path: '/' });
+        }else
+        if(res.data.result[0].msg === 'Login dulu!'){
+          alert('Login Dulu!');
+          router.push({ path: '/' });
+        }else{
+          this.datas = null
+          this.datas = res.data.result;
+        }
+      })
+      .catch((err) => {
+        console.log(err);
       });
-      if (hasil) {
-        for (let i = 0; i < this.dataCart.length; i++) {
-          if (this.dataCart[i].name == data.name) {
-            this.dataCart[i].count++;
+    },
+    sortedProduct(){
+      axios
+      .get(process.env.VUE_APP_SORT+ `?orderBy=${this.sorted.price}&sort=${this.sorted.name}`,{
+        headers: {
+          authtoken: localStorage.getItem(this.cacheKey)
+        }
+      })
+      .then((res) => {
+        if(res.data.result.name === 'TokenExpiredError'){
+          alert('Token Expired! Silahkan Login Lagi');
+          router.push({ path: '/' });
+        }else
+        if(res.data.result[0].msg === 'Login dulu!'){
+          alert('Login Dulu!');
+          router.push({ path: '/' });
+        }else{
+          this.datas = null;
+          this.datas = res.data.result;
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    },
+    searchName(){
+      axios
+      .get(process.env.VUE_APP_PRODUCT+ `/search?search=${this.srcName.name}`, {
+        headers: {
+          authtoken: localStorage.getItem(this.cacheKey)
+        }
+      })
+      .then((res) => {
+        this.datas = null;
+        this.datas = res.data.result;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    },
+    addCheckout(valueNama, valueTotal, valueOrder){
+      for(let i = 0; i < valueNama.length; i++) {
+        if(valueNama.length == 1){
+          this.checkout.name += `${valueNama[i].name}`
+        }else{
+          if(i == 0){
+            this.checkout.name += `${valueNama[i].name}`
+          }else{
+            this.checkout.name += `,${valueNama[i].name}`
           }
         }
+      }
+      this.checkout.amount = valueTotal;
+      this.checkout.orders = valueOrder;
+      // this.checkout.user = valueUser;
+      console.log(this.checkout)
+      
+      axios.post(process.env.VUE_APP_HISTORY, this.checkout, {
+        headers: {
+          authtoken: localStorage.getItem(this.cacheKey)
+        }
+      })
+      .then(() => {
+        this.chart = [];
+        alert('Success Checkout!')
+      })
+      .catch((err) => {
+        console.log(err);
+        alert('Error Add Product!')
+      });
+    },
+    addChart(items) {
+      if (this.chart.length == 0) {
+        this.chart.push(items);
       } else {
-        data.count = 1;
-        this.dataCart.push(data);
+        if (this.chart.includes(items)) {
+          //   this.chart.pop();
+        } else {
+          this.chart.push(items);
+        }
       }
     },
-    cancelCart() {
-      this.dataCart = [];
+    cencel() {
+      this.chart = [];
     },
-    addData() {
-      if (
-        this.form.name &&
-        this.form.price &&
-        this.form.id_category &&
-        this.form.image
-      ) {
-        axios({
-          method: "post",
-          url: 'http://localhost:9100/product',
-          headers: {
-            "Content-Type": "application/json",
-          },
-          data: JSON.parse(JSON.stringify(this.form)),
-        })
-          .then((res) => {
-            alert(res.data.description);
-            location.reload();
-          })
-          .catch((err) => {
-            alert(err);
-          });
-      } else {
-        alert("Masukkan data item dengan lengkap !");
+    filterOn() {
+      this.filter = !this.filter;
+      this.sorted.name = '';
+      this.sorted.price = '';
+      this.sortedProduct();
+    },
+  },
+  computed: {
+    addItem() {
+      let item = this.chart;
+      return item;
+    },
+    calculate() {
+      let price = 0;
+      for (const data of this.chart) {
+        price = Number(data.price) + price;
       }
+      return price.toFixed(2);
     },
   },
   mounted() {
-    axios
-      .get('http://localhost:9100/product')
-      .then((res) => {
-        this.dataproduct = res.data.result;
-      })
-      .catch((err) => {
-        alert(err);
-      });
-    axios
-      .get('http://localhost:9100/category')
-      .then((res) => {
-        this.options = [];
-        res.data.result.forEach((item) => {
-          this.options.push({
-            value: item.id,
-            text: item.name,
-          });
-        });
-      })
-      .catch((err) => {
-        alert(err.message);
-      });
+    this.loadProducts()
+    this.sortedProduct()
+    this.searchName()
+    this.username = localStorage.getItem(this.userKey)
   },
 };
 </script>
 
 <style scoped>
-.main-section {
-  background: rgba(190, 195, 202, 0.3);
-  box-sizing: border-box;
-  height: 100vh;
-  overflow: auto;
+.p-cart-0 {
+  padding: 0 0.7rem 0.2rem 0.7rem;
 }
-.home {
-  margin: 0;
+
+.dropdown-menu {
+  border: 0;
   padding: 0;
-  height: 100vh;
-  display: grid;
-  grid-template-columns: 80px auto 400px;
 }
-.container {
-  display: flex;
-  flex-wrap: wrap;
-}
-.button-item {
-  cursor: pointer;
-}
-aside {
-  position: relative;
-}
-article {
-  padding: 10px;
-}
-.header-cart {
-  display: flex;
-  position: sticky;
-  top: 0;
-  padding: 7px;
-  background: white;
-  height: 80px;
-}
-.cart-empty {
-  position: sticky;
-  top: 60px;
-}
-h2 {
-  margin: auto;
-}
-
-.cart-order {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-}
-.order-total {
-  display: flex;
-  justify-content: space-between;
-}
-h4 {
-  font-size: 1.3rem;
-}
-p {
-  font-size: 1rem;
-}
-.span-cart {
-  background-color: rgb(45, 243, 6);
-  border-radius: 100%;
-  padding: 3px 13px;
-  color: rgb(248, 244, 244);
-  font-size: 1.5rem;
-}
-.cart-wrap {
-  height: 60vh;
-}
-
-
 </style>

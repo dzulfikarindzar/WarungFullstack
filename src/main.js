@@ -1,16 +1,17 @@
 import '@babel/polyfill'
-import 'mutationobserver-shim'
+// import 'mutationobserver-shim'
 import Vue from 'vue'
-import './plugins/fontawesome'
-import './plugins/bootstrap-vue'
+// import './plugins/bootstrap-vue'
 import App from './App.vue'
-// import sample from "./sample"
-import routes from './routes'
+import routers from "./routes"
+import Vuelidate from 'vuelidate'
+// import home from "./views/home"
+
+Vue.use(Vuelidate)
 
 Vue.config.productionTip = false
 
 new Vue({
-  router : routes,
+  router : routers,
   render: h => h(App),
 }).$mount('#app')
-
