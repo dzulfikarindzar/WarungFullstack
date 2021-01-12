@@ -1,7 +1,6 @@
 <template>
+
  <div v-if="role == 'developer'" class="row">
-  <div 
-  class="row">
   
     <header
       class="col sticky-top bg-white d-flex justify-content-between py-4 shadow"
@@ -306,7 +305,6 @@
       </div>
     </main>
   </div>
- </div>
 </template>
 
 <script>

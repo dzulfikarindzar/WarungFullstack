@@ -75,8 +75,6 @@ export default {
         minLength : minLength(2)
     },
     methods: {
-
-       
         login(value) {
             Axios.post(process.env.VUE_APP_AUTH, value)
             .then((res) => {

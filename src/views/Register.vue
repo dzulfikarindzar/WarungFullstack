@@ -25,7 +25,7 @@
                 </div>
                 <div class="Register-inp">
                     <input
-                    :class="{'is-invalid': $v.email.$error}"
+                  
                         type="email"
                         name="email"
                         @blur="onBlur"
@@ -62,7 +62,6 @@
 <script>
 
 import axios from "axios"
-import { required, minLength, maxLength, email } from 'vuelidate/lib/validators'
 
 export default {
     name: "Register",
@@ -79,32 +78,27 @@ export default {
             userKey:'email'
         }
     },
-    validations : {
-       email : {
-           required,
-			email,
-            maxLength: maxLength(50),
-            minLength: minLength(2)
-       },
-    },
     methods: {
     formRegister(value) {
         // this.$v.$touch();
         // if(value.$v.error) {return}
         if(value.username === '' || value.username === null){
-        return alert('fill the name')
+        return alert('isikan nama')
       }
         if(value.email === '' || value.email === null){
-        return alert('fill the email')
+        return alert('isikan email')
+      }
+       if(!this.evalid(value.email)){
+        return alert('Email tidak valid!')
       }
         if(value.password === '' || value.password === null){
-        return alert('fill the password')
+        return alert('isikan password')
       }
       
        axios
       .post(process.env.VUE_APP_USERS, value)
       .then((res) => {
-        if(res.data.result[0].msg === 'Username/email has been registered'){
+        if(res.data.result[0].msg === "email has been registered"){
           alert('Username/email has been registered!');
         }else{
           alert('Register Success');
@@ -114,7 +108,7 @@ export default {
         }
       })
       .catch((err) => {
-        alert('Register failed');
+        alert('Register gagal');
         console.log(err);
       });
         },
@@ -127,7 +121,10 @@ export default {
                 event.target.classList.remove("focus")
             }
         },
-
+ evalid(email) {
+      const emailRegex = /^([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,4})$/;
+      return emailRegex.test(email);
+    }
         
     },
 }

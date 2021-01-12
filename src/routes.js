@@ -5,10 +5,11 @@ import Products from "./views/Products"
 import History from "./views/History"
 import Login from "./views/Login"
 import Register from "./views/Register"
+import notFound from "./components/404"
 
 Vue.use(VueRouter)
 
-const router = new VueRouter({
+const mainRouter = new VueRouter({
     mode:'history',
     routes: [
         {
@@ -41,27 +42,12 @@ const router = new VueRouter({
       name: "Register",
       component: Register,
   },
-
+  {
+    path : "/*",
+    component : notFound,  
+  }
 
   ],
 })
 
-// mainRouter.beforeEach((to, from, next) => {
-//     if (to.matched.some((record) => record.meta.requiresAuth)) {
-//       if (!store.getters.loggedIn) {
-//         next({
-//           name: "Login",
-//         });
-//       } else {
-//         next();
-//       }
-//     } else if (
-//       store.getters.loggedIn &&
-//       to.matched.some((record) => record.name == "Login")
-//     ) {
-//       next(router.replace(from));
-//     } else {
-//       next();
-//     }
-//   });
-export default router
+export default mainRouter

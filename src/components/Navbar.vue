@@ -16,7 +16,7 @@
         <img src="../assets/icon/clip.png" alt="" />
       </router-link>
       <div 
-    
+    v-if="role == 'developer'"
       class="v dropdown-item my-4">
         <router-link to="/products">
           <img src="../assets/icon/tulis.png" alt="" />

@@ -1,5 +1,4 @@
 <template>
-<div v-if="role == 'developer' || role == 'users'" class="row">
   <div class="row">
     <header
       class="col-12 sticky-top bg-white d-flex justify-content-between py-4 shadow"
@@ -31,7 +30,7 @@
           <table class="table text-center">
             <thead>
               <tr>
-                <th scope="col">ID</th>
+                <th scope="col">No. ID</th>
                 <th scope="col">Cashier</th>
                 <th scope="col">Orders</th>
                 <th scope="col">Amount</th>
@@ -54,7 +53,6 @@
       </div>
     </main>
   </div>
-</div>
 </template>
 
 <script>

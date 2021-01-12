@@ -1,5 +1,4 @@
 <template>
-<div v-if="role == 'developer' || role == 'users'" class="row">
    <div class="row">
     <div class="col-sm-12 col-xl-9">
       <header class="row sticky-top bg-white py-4 shadow">
@@ -182,7 +181,6 @@
       </div>
     </aside>
   </div>
-</div>
 </template>
 
 <script>
@@ -300,7 +298,6 @@ export default {
       }
       this.checkout.amount = valueTotal;
       this.checkout.orders = valueOrder;
-      // this.checkout.user = valueUser;
       console.log(this.checkout)
       
       axios.post(process.env.VUE_APP_HISTORY, this.checkout, {

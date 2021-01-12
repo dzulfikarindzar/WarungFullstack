@@ -1,21 +1,25 @@
 <template>
-  <div id="app">
-    <router-view />
+  <div class="container-fluid">
+    <router-view> </router-view>
   </div>
 </template>
+
+<script>
+export default {
+    name: 'App',
+}
+
+</script>
 
 <style>
 #app,
 #app::before,
 #appafter {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  font-family: "Airbnb Cereal App";
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  font-family: sans-serif;
   text-align: center;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
-
 </style>
