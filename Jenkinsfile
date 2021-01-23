@@ -1,4 +1,6 @@
-
+def dockerhub = "dzfulikarindzar/jenkins"
+def image name = "${dockerhub}:${BRANCH_NAME}"
+def builder
 
 pipeline {
 
@@ -6,19 +8,34 @@ pipeline {
 
     parameters {
         string(name: "dzulfikar", defaultValue: 'Test Params', description: 'Trying Jenkinsfile')
-        booleanParam(name: "TEST", defaultValue: 'false', description: 'Trying Jenkinsfile')
+        booleanParam(name: "TEST", defaultValue: 'true', description: 'Trying Jenkinsfile')
         choice(name: "DEPLOY", choices: ["Yes", "No"], description: 'Trying Jenkinsfile')
 
     }
 
     stages {
 
-        stage ("Build"){
+        stage ("Install depedencies"){
             steps {
-                echo "Hello from build"
+                nodejs("nodever14"){
+                    sh 'npm install'
+                }
             }
         }
 
+        stage ("Build Docker"){
+            when {
+                expression {
+                    params.TEST
+                }
+            }
+            steps {
+                script{
+                    builder = docker.build("${dockerhub}:${BRANCH_NAME}")
+                }
+            }
+        }
+        
         stage ("Testing"){
             when {
                 expression {
@@ -26,18 +43,24 @@ pipeline {
                 }
             }
             steps {
-                echo "Hello from Testing"
+                 script{
+                    builder.inside {
+                        sh 'echo passed'
+                    }
+                }
             }
         }
 
-        stage ("Deploy"){
+        stage ("Push Image"){
              when {
                 expression {
                     params.DEPLOY == "Yes"
                 }
             }
             steps {
-                echo "HelLo from deploy"
+                 script{
+                    builder.push()
+                }
             }
         }
     }
