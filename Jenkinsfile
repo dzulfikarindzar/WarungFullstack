@@ -52,11 +52,6 @@ pipeline {
         }
 
         stage ("Push Image"){
-             when {
-                expression {
-                    params.DEPLOY == "Yes"
-                }
-            }
             steps {
                  script{
                     builder.push()
