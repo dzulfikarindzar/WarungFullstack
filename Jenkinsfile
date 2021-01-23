@@ -1,5 +1,5 @@
 def dockerhub = "dzfulikarindzar/jenkins"
-def image name = "${dockerhub}:${BRANCH_NAME}"
+def image_name = "${dockerhub}:${BRANCH_NAME}"
 def builder
 
 pipeline {
