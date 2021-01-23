@@ -1,4 +1,4 @@
-def dockerhub = "dzfulikarindzar/jenkins"
+def dockerhub = "dzulfikarindzar/jenkins"
 def image_name = "${dockerhub}:${BRANCH_NAME}"
 def builder
 
