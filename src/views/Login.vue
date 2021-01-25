@@ -20,6 +20,7 @@
           <input 
           label="Password"
           :type="showPassword ? 'text' : 'password'"
+          :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
           @blur="onBlur" 
           @focus="onFocus"
           v-model="loginInfo.password"
