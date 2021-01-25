@@ -69,7 +69,9 @@ pipeline {
                                 verbose: false,
                                 transfers: [
                                     sshTransfer(
-                                        execCommand: "docker pull ${image_name};docker kill vuewarung; docker run -d --rm --name vuewarung -p 8080:80 ${image_name}",
+                                        sourceFiles: 'docker-compose.yml',
+                                        remoteDirectory: 'app',
+                                        execCommand: "docker pull ${dockerhub}:${BRANCH_NAME}; cd ./app/app; docker-compose stop; docker-compose up -d --force-recreate",
                                         execTimeout: 1200000
                                     )
                                 ]
