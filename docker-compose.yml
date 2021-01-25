@@ -1,0 +1,23 @@
+version: "3.7"
+services:
+    frontend:
+      container_name: frontend
+      image: dzulfikarindzar/jenkins:master
+      ports: 
+          - "8080:80"
+      networks: 
+          - netku
+      environment:
+          - VUE_APP_USERS=http://18.206.209.79/api/users
+          - VUE_APP_AUTH=http://18.206.209.79/api/auth
+          - VUE_APP_PRODUCT=http://18.206.209.79/api/product
+          - VUE_APP_CATEGORY=http://18.206.209.79/api/category
+          - VUE_APP_HISTORY=http://18.206.209.79/api/history
+          - VUE_APP_SEARCH=http://18.206.209.79/api/product/search
+          - VUE_APP_URL=http://18.206.209.79/
+          - VUE_APP_SORT=http://18.206.209.79/api/product/sort
+
+
+networks: 
+    netku:
+        driver: bridge
