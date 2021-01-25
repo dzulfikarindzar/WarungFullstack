@@ -69,7 +69,7 @@ pipeline {
                                 verbose: false,
                                 transfers: [
                                     sshTransfer(
-                                        execCommand: "docker pull ${image_name};docker kill vuewarung; docker run -d --rm --name vuewarung -p 8080:80 ${image_name}"
+                                        execCommand: "docker pull ${image_name};docker kill vuewarung; docker run -d --rm --name vuewarung -p 8080:80 ${image_name}",
                                         execTimeout: 1200000
                                     )
                                 ]
