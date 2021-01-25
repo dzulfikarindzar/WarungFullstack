@@ -7,43 +7,36 @@ pipeline {
     agent any
 
     parameters {
-        string(name: "dzulfikar", defaultValue: 'Test Params', description: 'Trying Jenkinsfile')
-        booleanParam(name: "TEST", defaultValue: 'true', description: 'Trying Jenkinsfile')
-        choice(name: "DEPLOY", choices: ["Yes", "No"], description: 'Trying Jenkinsfile')
-
+        booleanParam(name: 'RUNTEST', defaultValue: true, description: 'Checklist for RUNTEST')
+        choice(name: 'DEPLOY', choices: ['Develop', 'Production'], description: 'Select for DEPLOY')
     }
 
     stages {
 
-        stage ("Install depedencies"){
+        stage('Installing Dependencies') {
             steps {
-                nodejs("nodever14"){
+                nodejs("nodever14") {
                     sh 'npm install'
                 }
             }
         }
 
-        stage ("Build Docker"){
-            when {
-                expression {
-                    params.TEST
-                }
-            }
+        stage('Build Docker Image') {
             steps {
-                script{
+                script {
                     builder = docker.build("${dockerhub}:${BRANCH_NAME}")
                 }
             }
         }
-        
-        stage ("Testing"){
+
+        stage('Run Testing') {
             when {
                 expression {
-                    params.TEST
+                    params.RUNTEST
                 }
             }
             steps {
-                 script{
+                script {
                     builder.inside {
                         sh 'echo passed'
                     }
@@ -51,17 +44,28 @@ pipeline {
             }
         }
 
-        stage ("Push Image"){
+        stage('Push Image') {
+            when {
+                expression {
+                    params.RUNTEST
+                }
+            }
             steps {
-                 script{
+                
+                script {
                     builder.push()
                 }
             }
         }
 
-          stage ("Deploy"){
+        stage('Deploy on develop') {
+            when {
+                expression {
+                    params.DEPLOY == 'Develop'
+                }
+            }
             steps {
-                 script{
+                script {
                     sshPublisher(
                         publishers: [
                             sshPublisherDesc(
@@ -70,8 +74,9 @@ pipeline {
                                 transfers: [
                                     sshTransfer(
                                         sourceFiles: 'docker-compose.yml',
-                                        execCommand: "docker pull ${image_name};docker kill vuewarung; docker run -d --rm --name vuewarung -p 8080:80 ${image_name}",
-                                        execTimeout: 1200000
+                                        remoteDirectory: 'app',
+                                        execCommand: "docker pull ${dockerhub}:${BRANCH_NAME}; cd ./app/app; docker-compose stop; docker-compose up -d --force-recreate",
+                                        execTimeout: 120000,
                                     )
                                 ]
                             )
