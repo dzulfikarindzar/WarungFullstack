@@ -8,7 +8,7 @@ pipeline {
 
     parameters {
         booleanParam(name: 'RUNTEST', defaultValue: true, description: 'Ceklis RUNTEST')
-        choice(name: 'DEPLOY', choices: ['Yes', 'No'], description: 'Choice for DEPLOY')
+        choice(name: 'DEPLOY', choices: ['Deploy', 'Production'], description: 'Choice for DEPLOY')
     }
 
     stages {
@@ -61,7 +61,7 @@ pipeline {
         stage('Deploy on develop') {
             when {
                 expression {
-                    params.DEPLOY == 'Yes'
+                    params.DEPLOY == 'Deploy' || BRANCH_NAME == 'dev'
                 }
             }
             steps {
@@ -76,6 +76,33 @@ pipeline {
                                         sourceFiles: 'docker-compose.yml',
                                         remoteDirectory: 'app',
                                         execCommand: "docker pull ${dockerhub}:${BRANCH_NAME}; cd ./app/app; docker-compose stop; docker-compose up -d --force-recreate",
+                                        execTimeout: 120000,
+                                    )
+                                ]
+                            )
+                        ]
+                    )
+                }
+            }
+        }
+        stage('Deploy on Production') {
+            when {
+                expression {
+                    params.DEPLOY == 'Production' || BRANCH_NAME == 'prod'
+                }
+            }
+            steps {
+                script {
+                    sshPublisher(
+                        publishers: [
+                            sshPublisherDesc(
+                                configName: 'prodserver',
+                                verbose: false,
+                                transfers: [
+                                    sshTransfer(
+                                        sourceFiles: 'docker-compose.yml',
+                                        remoteDirectory: 'app',
+                                        execCommand: "docker pull ${dockerhub}:${BRANCH_NAME}; cd ./app/app; docker-compose stop; docker-compose up -d",
                                         execTimeout: 120000,
                                     )
                                 ]
