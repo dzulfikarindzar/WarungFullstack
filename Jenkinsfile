@@ -61,7 +61,7 @@ pipeline {
         stage('Deploy on develop') {
             when {
                 expression {
-                    params.DEPLOY == 'Deploy' || BRANCH_NAME == 'dev'
+                    params.DEPLOY == 'Deploy' 
                 }
             }
             steps {
@@ -88,7 +88,7 @@ pipeline {
         stage('Deploy on Production') {
             when {
                 expression {
-                    params.DEPLOY == 'Production' || BRANCH_NAME == 'prod'
+                    params.DEPLOY == 'Production' 
                 }
             }
             steps {
