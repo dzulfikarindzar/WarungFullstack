@@ -85,7 +85,7 @@ pipeline {
                 }
             }
         }
-        
+
         stage('Deploy on Production') {
             when {
                 expression {
@@ -103,7 +103,7 @@ pipeline {
                                     sshTransfer(
                                         sourceFiles: 'docker-compose.yml',
                                         remoteDirectory: 'app',
-                                        execCommand: "docker pull ${dockerhub}:${BRANCH_NAME}; cd ./app/app; docker-compose stop; docker-compose up -d",
+                                        execCommand: "docker pull ${dockerhub}:${BRANCH_NAME}; cd ./app/app; docker-compose stop; docker-compose up -d --force-recreate",
                                         execTimeout: 120000,
                                     )
                                 ]
