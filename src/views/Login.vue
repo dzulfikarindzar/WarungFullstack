@@ -122,7 +122,7 @@ export default {
 
 .container {
     min-height: 100vh;
-    background-image: url("../assets/warjok.jpg");
+    background-image: url("../assets/warjok2.jpg");
     background-repeat: no-repeat;
     background-size: 700px;
     background-position: 20% 50%;
