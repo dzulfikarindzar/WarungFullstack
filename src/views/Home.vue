@@ -1,12 +1,12 @@
 <template>
    <div class="row">
     <div class="col-sm-12 col-xl-9">
-      <header class="row sticky-top bg-white py-4 shadow">
+      <header class="row sticky-top bg-white py-3 shadow">
         <div class="col-3 col-md-1">
           <Navbar />
         </div>
         <div class="col-9 col-md-7 justify-content-between">
-          <h1 class="text-center font-weight-bold">WARUNG POJOK</h1>
+          <h1 class="text-center font-weight-bold">Daftar Menu</h1>
           <h1></h1>
         </div>
         <div class="col-12 col-md-4 d-flex justify-content-end">
@@ -20,10 +20,10 @@
             />
           </form>
           <button class="btn" @click="searchName()">
-            <img src="../assets/searc.png" alt="" />
+            <img src="../assets/searc2.png" alt="" />
           </button>
           <button class="btn" @click="filterOn()">
-            <img src="../assets/icon/filter1.png" alt="" />
+            <img src="../assets/icon/filter2.png" alt="" />
           </button>
         </div>
         <div v-if="filter" class="col-12 text-center border-top">
@@ -32,8 +32,8 @@
               <h5>Sort</h5>
               <select class="form-select ml-2" aria-label="Default select example" v-model="sorted.name" @click="sortedProduct()">
                 <option selected></option>
-                <option value="ASC">1 - 1.000.000</option>
-                <option value="DESC">1.000.000 - 1</option>
+                <option value="ASC">Asc</option>
+                <option value="DESC">Desc</option>
               </select>
             </div>  
     
@@ -80,7 +80,7 @@
       >
         <h2 class="text-center font-weight-bold">
           Cart
-          <span class="p-cart-0 bg-warning text-white rounded-circle">
+          <span class="p-cart-0 bg-primary text-white rounded-circle">
             {{ chart.length }}
           </span>
         </h2>
