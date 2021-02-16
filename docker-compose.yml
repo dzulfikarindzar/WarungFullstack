@@ -4,7 +4,7 @@ services:
       container_name: frontend
       image: dzulfikarindzar/jenkins:master
       ports: 
-          - "8789:8080"
+          - "8789:80"
       networks: 
           - netku
       environment:
