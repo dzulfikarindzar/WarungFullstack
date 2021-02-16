@@ -1,14 +1,13 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import auth from './modules/auth'
-import VuePersisDate from 'vuex-persistedstate'
+// import auth from './modules/auth'
+import Cart from './modules/cart'
 
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
     modules :{
-        auth
+        Cart,
     },
-    Plugins : [VuePersisDate]
 })

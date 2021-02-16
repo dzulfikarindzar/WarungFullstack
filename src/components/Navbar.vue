@@ -6,7 +6,7 @@
       id="dropdownMenuButton"
       data-toggle="dropdown"
     >
-      <img src="../assets/icon/menu.png" alt="" />
+      <img style="margin-top: 5px;" src="../assets/icon/menu.png" alt="" />
     </button>
     <div class="dropdown-menu text-center" aria-labelledby="dropdownMenuButton">
       <router-link to="/home" class="dropdown-item my-4">
@@ -39,7 +39,7 @@ export default {
     return{
       cacheKey: 'token',
       roleKey: 'role',
-      userKey: 'email',
+      userKey: 'name',
       role: '',
     }
   },

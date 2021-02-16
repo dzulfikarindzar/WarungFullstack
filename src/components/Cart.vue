@@ -7,10 +7,10 @@
       <div class="col-8">
         <div class="">
           <p class="card-text pt-2">{{ name }}</p>
-          <div class="btn border" @click="less()">-</div>
-          <div class="btn border">{{ jumlah }}</div>
-          <div class="btn border" @click="plus()">+</div>
-          <h5 class="card-title pt-3">Rp.{{ price * jumlah }}</h5>
+          <div class="btn bg-light btn-m ml-1 font-weight-bold" @click="delCart(id)">-</div>
+          <div class="btn border bg-light ml-1 mr-1 font-weight-bold">{{ qty }}</div>
+          <div class="btn btn-info btn-m mr-1 font-weight-bold" @click="addCart(cart)">+</div>
+          <h5 class="card-title pt-2">{{toRupiah(price * qty)}}</h5>
         </div>
       </div>
     </div>
@@ -18,9 +18,15 @@
 </template>
 
 <script>
+import {mapActions} from 'vuex';
+
 export default {
   name: "Cart",
   props: {
+    id: {
+      type: Number,
+      required: true,
+    },
     image: {
       type: String,
       required: true,
@@ -33,25 +39,26 @@ export default {
       type: String,
       required: true,
     },
+    qty: {
+      type: Number,
+      required: true,
+    },
+    cart: {
+      type: Object,
+      required: true,
+    },
   },
-  data() {
-    return {
-      jumlah: 1,
-    };
-  },
+
   methods: {
-    plus() {
-      if (this.jumlah >= 1) {
-        this.jumlah += 1;
-      }
+    ...mapActions(['addCart', 'delCart']),
+    toRupiah(value) {
+      return (
+        "Rp. " +
+        Math.round(value)
+          .toString()
+          .replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, "$1.")
+      );
     },
-    less() {
-      if (this.jumlah == 1) {
-        // this.jumlah -= 1;
-      } else {
-        this.jumlah -= 1;
-      }
-    },
-  },
-};
+  }
+}
 </script>

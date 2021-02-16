@@ -15,7 +15,7 @@ pipeline {
 
         stage('Installing Dependencies') {
             steps {
-                nodejs("nodever14") {
+                nodejs("node14") {
                     sh 'npm install'
                 }
             }
