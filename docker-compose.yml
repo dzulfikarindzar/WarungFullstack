@@ -8,14 +8,14 @@ services:
       networks: 
           - netku
       environment:
-          - VUE_APP_USERS=http://3.83.153.65/api/users
-          - VUE_APP_AUTH=http://3.83.153.65/api/auth
-          - VUE_APP_PRODUCT=http://3.83.153.65/api/product
-          - VUE_APP_CATEGORY=http://3.83.153.65/api/category
-          - VUE_APP_HISTORY=http://3.83.153.65/api/history
-          - VUE_APP_SEARCH=http://3.83.153.65/api/product/search
-          - VUE_APP_URL=http://3.83.153.65/
-          - VUE_APP_SORT=http://3.83.153.65/api/product/sort
+          - VUE_APP_USERS=http://graphkitchen.host/api/users
+          - VUE_APP_AUTH=http://graphkitchen.host/api/auth
+          - VUE_APP_PRODUCT=http://graphkitchen.host/api/product
+          - VUE_APP_CATEGORY=http://graphkitchen.host/api/category
+          - VUE_APP_HISTORY=http://graphkitchen.host/api/history
+          - VUE_APP_SEARCH=http://graphkitchen.host/api/product/search
+          - VUE_APP_URL=http://graphkitchen.host/
+          - VUE_APP_SORT=http://graphkitchen.host/api/product/sort
 
 
 networks: 
