@@ -6,10 +6,10 @@
       </div>
       <div class="col-8">
         <div class="">
-          <p class="card-text pt-2">{{ name }}</p>
-          <div class="btn bg-light btn-m ml-1 font-weight-bold" @click="delCart(id)">-</div>
+          <p class="card-text pt-2 font-weight-bold">{{ name }}</p>
+          <div class="btn bg-light btn-warning ml-1 font-weight-bold" @click="delCart(id)">-</div>
           <div class="btn border bg-light ml-1 mr-1 font-weight-bold">{{ qty }}</div>
-          <div class="btn btn-info btn-m mr-1 font-weight-bold" @click="addCart(cart)">+</div>
+          <div class="btn btn-success btn-m mr-1 font-weight-bold" @click="addCart(cart)">+</div>
           <h5 class="card-title pt-2">{{toRupiah(price * qty)}}</h5>
         </div>
       </div>

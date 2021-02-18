@@ -1,14 +1,14 @@
 <template>
    <div class="row">
     <div class="col-sm-12 col-xl-9">
-      <header class="row sticky-top bg-white py-2 shadow">
+      <header class="row sticky-top bg-white py-1 shadow">
         <div class="col-3 col-md-1">
           <Navbar />
         </div>
-        <div class="col-12 col-md-7 justify-content-between">
-          <h2 style="font-size: 33px;" class="text-center py-1 font-weight-bold">Daftar Menu</h2>
+        <div class="col-9 col-md-7 justify-content-between">
+          <h2 style="font-size: 35px; font-weight: bold" class="text-center py-1">Daftar Menu</h2>
         </div>
-        <div class="col-6 col-md-4 d-flex justify-content-end">
+        <div class="col-12 col-md-4 d-flex justify-content-end">
           <form action="#" class="form-inline my-2 my-lg-0">
             <input
               v-model="srcName.name"
@@ -18,29 +18,47 @@
               @keyup.delete="searchName()"
             />
           </form> 
-          <button class="btn" @click="searchName()">
-            <img src="../assets/searc2.png" alt="" />
-          </button>
-          <button style= "height: 3.9rem;" class="btn" @click="filterOn()">
-            <img src="../assets/icon/filter1.png" alt="" />
+              <fa-icon style="margin: 14px;" :icon="['fas', 'search']" size="2x"/>
+          <button class="btn" @click="filterOn()">
+            <fa-icon :icon="['fas', 'filter']" size="2x"/>
           </button>
         </div>
         <div v-if="filter" class="col-12 text-center border-top">
           <div class="row m-2 py-1">
-            <div class="col-6 col-md-4 d-flex justify-content-center mt-3">
-              <h5>Sort</h5>
-              <select class="form-select ml-2" aria-label="Default select example" v-model="sorted.name" @click="sortedProduct()">
+
+            <div class="col-6 col-md-3 d-flex justify-content-center mt-3">
+            <h5>Name</h5>
+              <select class="btn form-select ml-3" aria-label="Default select example" v-model="sorted.name" @click="sortedProduct()">
                 <option selected></option>
-                <option value="ASC">ASC</option>
-                <option value="DESC">DESC</option>
+                <option value="ASC">A - Z</option>
+                <option value="DESC">Z - A</option>
               </select>
-            </div>  
-    
-            <div class="col-6 col-md-4 d-flex justify-content-center mt-3">
-              <h5>OrderBy</h5>
-              <select class="form-select ml-2" aria-label="Default select example" v-model="sorted.price" @click="sortedProduct()">
+            </div> 
+
+          <div class="col-6 col-md-3 d-flex justify-content-center mt-3">
+              <h5>Price</h5>
+              <select class="btn form-select ml-3" aria-label="Default select example" v-model="sorted.price" @click="sortedProduct()">
                 <option selected></option>
-                <option value="price">PRICE</option>
+                <option value="ASC">Low</option>
+                <option value="DESC">High</option>
+              </select>
+            </div>
+
+          <div class="col-6 col-md-3 d-flex justify-content-center mt-3">
+              <h5>Category</h5>
+              <select class="btn form-select ml-3" aria-label="Default select example" v-model="sorted.category" @click="sortedProduct()">
+                <option selected></option>
+                <option value="ASC">Drinks</option>
+                <option value="DESC">Food</option>
+              </select>
+            </div>
+
+            <div class="col-6 col-md-3 d-flex justify-content-center mt-3">
+              <h5>Products</h5>
+              <select class="btn form-select ml-3" aria-label="Default select example" v-model="sorted.new" @click="sortedProduct()">
+                <option selected></option>
+                <option value="DESC">New</option>
+                <option value="ASC">Old</option>
               </select>
             </div>
           </div>
@@ -57,17 +75,16 @@
       </main>
     </div>
     <aside class="col-xl-3 bg-white border-left">
-      <div
-        class="row sticky-top bg-white py-3 d-flex justify-content-center border-bottom"
-      >
-        <h2 class="text-center font-weight-bold">
-          Cart
-          <span class="p-cart-0 bg-primary text-white rounded-circle">
-            {{ quantity }}
+      <div class="row sticky-top bg-white py-2 d-flex justify-content-center border-bottom">
+        <h2 class="text-center">
+         <fa-icon :icon="['fas', 'shopping-basket']" size="lg"/>
+          <span style="font-size: 1.7rem;" class="bg-primary text-center text-white rounded-circle pr-2 m-1">
+            {{ quantity}}
           </span>
         </h2>
       </div>
       <div class="row pt-3" v-if="allCart.length > 0">
+  
         <div
           v-for="(item, index) in allCart"
           :key="item.id"
@@ -84,11 +101,10 @@
 
         <div class="col-12 pt-4">
           <div class="d-flex justify-content-between">
-            <h3>Total:</h3>
-            <h3>{{toRupiah (calculate) }}*</h3>
+            <h3 style="font-size: 1.4rem;">Total:</h3>
+            <h3 style="font-size: 1.2rem;">{{toRupiah (calculate) }}*</h3>
           </div>
-          <!-- Button trigger modal -->
-          <h7>*belum termasuk PB1</h7>
+          <h7 style="font-size: 0.9rem;">*belum termasuk PPn</h7>
           <button
             type="button"
             class="col btn btn-primary mt-2"
@@ -123,30 +139,30 @@
                   </button>
                 </div>
                 <div class="modal-body bg-light">
-                  <p class="font-weight-bold text-right">Receipt no:{{randomInvoice(invoices)}}</p>
-                  <p class="fst-normal text-left">Cashier: {{ cashier }}</p>
+                  <p style="font-size: 0.9rem" class="font-weight-bold text-right">Receipt no:{{randomInvoice(invoices)}}</p>
+                  <p style="font-size: 0.9rem" class="text-left font-weight-bold">Cashier: {{ cashier }}</p>
                   <div
                     class="d-flex justify-content-between"
                     v-for="item of allCart"
                     :key="item.product.id"
                   >
                  
-                    <p class="font-weight-bold">{{ item.product.name}} x {{item.qty}}</p>
-                    <p class="font-weight-bold">{{toRupiah (item.product.price) }}</p>
+                    <p style="font-size: 0.9rem" class="font-weight-bold">{{ item.product.name}} x {{item.qty}}</p>
+                    <p style="font-size: 0.9rem" class="font-weight-bold">{{toRupiah (item.product.price) }}</p>
                   </div>
                   <div class="d-flex justify-content-between">
-                    <p class="font-weight-bold">PB1 10% </p>
-                    <p class="font-weight-bold">{{toRupiah(ppn)}}</p>
+                    <p style="font-size: 0.9rem" class="font-weight-bold">PPn 10% </p>
+                    <p style="font-size: 0.9rem" class="font-weight-bold">{{toRupiah(ppn)}}</p>
                   </div>
-                  <p class="font-weight-bold text-right">
-                    Total : {{toRupiah (calculate + ppn) }} 
+                  <p style="font-size: 0.9rem" class="font-weight-bold text-right">
+                    Total:  {{toRupiah (calculate + ppn) }} 
                   </p>
-                  <p class="font-weight-bold text-left pt-2">Payment:Cash</p>
+                  <p style="font-size: 0.9rem" class="font-weight-bold text-left pt-2">Payment: Cash</p>
                   
                 </div>
 
                 <div class="modal-footer bg-light">
-                  <button type="button" class="col btn btn-success" data-dismiss="modal" @click="addCheckout(allCart, (calculate+ppn), cashier, userName, invoices) & cartNull()">
+                  <button type="button" class="col btn btn-primary" data-dismiss="modal" @click="addCheckout(allCart, (calculate+ppn), cashier, userName, invoices) & cartNull()">
                     Print
                   </button>
                 </div>
@@ -182,7 +198,6 @@ import Navbar from "../components/Navbar.vue";
 import Cart from "../components/Cart.vue"
 import router from "../routes"
 import {mapActions, mapGetters} from 'vuex';
-
 export default {
   name: "Home",
    components: {
@@ -201,10 +216,12 @@ export default {
         users:null,
         invoices:null,
       },
-      cashier: "Dzulfikar",
+      cashier: "Dzul",
       sorted:{
         name:'',
-        price:'',
+        category: '',
+        new: '',
+        price: Number,
       },
       srcName:{
         name:'',
@@ -214,7 +231,8 @@ export default {
       userKey: 'name',
       userName: '',
       invoices: '',
-
+      roleKey: 'role',
+      role: '',
       
     };
   },
@@ -231,23 +249,24 @@ export default {
       );
     },
     ...mapActions(['cartNull']),
-    loadProducts(){
-      axios.get(process.env.VUE_APP_URL + "product", {
+      sortedProduct(){
+      axios
+      .get(process.env.VUE_APP_URL + "sorted" + `/?name=${this.sorted.name}&category=${this.sorted.category}&new=${this.sorted.new}&price=${this.sorted.price}`,{
         headers: {
           authtoken: localStorage.getItem(this.cacheKey)
         }
       })
       .then((res) => {
-        if(res.data.result.email === 'TokenExpiredError'){
-          alert('Token Expired! Silahkan Login Lagi');
+        if(res.data.result[0].msg === 'Login first'){
+          alert('Login First!');
           router.push({ path: '/' });
         }else
-        if(res.data.result[0].msg === 'Login dulu!'){
-          alert('Login Dulu!');
+        if(res.data.result[0].msg === 'Check Token!'){
+          alert('Token Expired!');
           router.push({ path: '/' });
         }else
-        if(res.data.result[0].msg === 'Not Found'){
-          alert('404 | Not Found');
+        if(res.data.result[0].msg === 'you not premitted'){
+          alert('Cannot Access');
           router.push('404');
         }else{
           this.datas = null
@@ -258,37 +277,9 @@ export default {
         console.log(err);
       });
     },
-    sortedProduct(){
-      axios
-      .get(process.env.VUE_APP_URL + "product" + "/sort" + `?orderBy=${this.sorted.price}&sort=${this.sorted.name}`,{
-        headers: {
-          authtoken: localStorage.getItem(this.cacheKey)
-        }
-      })
-      .then((res) => {
-        if(res.data.result.name === 'TokenExpiredError'){
-          alert('Token Expired! Silahkan Login Lagi');
-          router.push({ path: '/' });
-        }else
-        if(res.data.result[0].msg === 'Login dulu!'){
-          alert('Login Dulu!');
-          router.push({ path: '/' });
-        }else
-        if(res.data.result[0].msg === 'Not Found'){
-          alert('404 | Not Found');
-          router.push('404');
-        }else{
-          this.datas = null;
-          this.datas = res.data.result;
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    },
     searchName(){
       axios
-      .get(process.env.VUE_APP_URL + "product" + `/search?search=${this.srcName.name}`, {
+      .get(process.env.VUE_APP_URL + "sorted" +  `/${this.srcName.name}`, {
         headers: {
           authtoken: localStorage.getItem(this.cacheKey)
         }
@@ -312,7 +303,6 @@ export default {
           }else{
             this.checkout.orders += `,${valueOrders[i].product.name}`
           }
-
         }
       }
       this.checkout.cashier = valueCashier;
@@ -321,10 +311,7 @@ export default {
       this.checkout.users = valueUser;
       this.Invoices = valueInvoices
       this.checkout.invoices += '';
-      // this.checkout.invoices = valueInvoices;
-      
-    
-      console.log(this.checkout)
+  
       
       axios.post(process.env.VUE_APP_URL + "history", this.checkout, {
         headers: {
@@ -333,30 +320,18 @@ export default {
       })
       .then(() => {
         this.chart = [];
-        alert('Terimakasih!')
+        alert('Terimakasih! :)')
       })
       .catch((err) => {
         console.log(err);
-        alert('Gagal Checkout!')
+        alert('Maaf gagal:(')
       });
-    },
-    addChart(value) {
-      if (this.chart.length == 0) {
-        this.chart.push(value);
-      } else {
-        if (this.chart.includes(value)) {
-          // this.chart.push(prod);
-        } else {
-          this.chart.push(value);
-        }
-      }
-    },
-    cancel() {
-      this.chart = [];
     },
     filterOn() {
       this.filter = !this.filter;
       this.sorted.name= '';
+      this.sorted.category= ''
+      this.sorted.new= ''
       this.sorted.price = '';
       this.sortedProduct();
     },
@@ -365,21 +340,15 @@ export default {
     ...mapGetters(['allCart', 'calculate', 'quantity', 'ppn'])
   },
   mounted() {
-    this.loadProducts()
     this.sortedProduct()
     this.searchName()
+    this.role = localStorage.getItem(this.roleKey)
     this.userName = localStorage.getItem(this.userKey)
-    // this.Invoices = localStorage.getItem(this.randomInvoices)
-
   },
 };
 </script>
 
 <style scoped>
-.p-cart-0 {
-  padding: 0 0.7rem 0.2rem 0.7rem;
-}
-
 .dropdown-menu {
   border: 0;
   padding: 0;

@@ -1,7 +1,7 @@
 version: "3.7"
 services:
     frontend:
-      container_name: frontend
+      container_name: frontend-graph
       image: dzulfikarindzar/jenkins:master
       ports: 
           - "8789:80"

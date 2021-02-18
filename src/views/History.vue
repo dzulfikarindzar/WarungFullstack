@@ -19,7 +19,7 @@
         </div>
       </div>
       <div v-if="role == 'developer'" class="row mt-3">
-        <div style= "width: 50rem;" class="col-12">
+        <div style="width: 10rem;" class="col-12">
           <img src="../assets/history/Chart.svg" alt="" class="card-img-top" />
         </div>
       </div>
